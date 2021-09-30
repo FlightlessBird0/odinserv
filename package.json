@@ -1,0 +1,32 @@
+{
+  "name": "odinserv",
+  "version": "1.0.0",
+  "description": "A utility for valheim server and client featuring backup and restore functionality.",
+  "main": "./bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "odin": "./bin/index.js"
+  },
+  "keywords": [
+    "valheim",
+    "utility",
+    "steam",
+    "games",
+    "server",
+    "client"
+  ],
+  "author": "FlightlessBird0",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "dotenv": "^10.0.0",
+    "yargs": "^17.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "2.4.1"
+  }
+}
