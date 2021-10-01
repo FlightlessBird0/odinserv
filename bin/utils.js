@@ -4,15 +4,28 @@ const { valhallaPath } = require("./relativeVars");
 
 function makeValhallaDir(path, successMessage, errorMessage) {
   const relativePath = `${valhallaPath}${path}`;
-  fs.mkdir(relativePath, { recursive: true }, (err) => {
+
+  try {
+    fs.mkdirSync(relativePath, { recursive: true });
     console.log(
-      !err
-        ? chalk.blueBright(
-            `${successMessage}: ${chalk.underline(relativePath)}`
-          )
-        : chalk.redBright(errorMessage)
+      chalk.blueBright(`${successMessage}: ${chalk.underline(relativePath)}`)
     );
-  });
+    return true;
+  } catch (error) {
+    console.log(error);
+    console.log(chalk.redBright(errorMessage));
+    return false;
+  }
+  // fs.mkdir(relativePath, { recursive: true }, (err) => {
+  //   console.log(
+  //     !err
+  //       ? chalk.blueBright(
+  //           `${successMessage}: ${chalk.underline(relativePath)}`
+  //         )
+  //       : chalk.redBright(errorMessage)
+  //   );
+  //   outcome = err ? false : true;
+  // });
 }
 
 module.exports = { makeValhallaDir };

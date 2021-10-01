@@ -1,7 +1,4 @@
-require("dotenv").config({
-  path: __dirname + `/../.env.test`,
-  debug: process.env.DEBUG,
-});
+#! /usr/bin/env node
 const yargs = require("yargs");
 const chalk = require("chalk");
 const { TYPES } = require("./constants.json");
