@@ -16,16 +16,6 @@ function makeValhallaDir(path, successMessage, errorMessage) {
     console.log(chalk.redBright(errorMessage));
     return false;
   }
-  // fs.mkdir(relativePath, { recursive: true }, (err) => {
-  //   console.log(
-  //     !err
-  //       ? chalk.blueBright(
-  //           `${successMessage}: ${chalk.underline(relativePath)}`
-  //         )
-  //       : chalk.redBright(errorMessage)
-  //   );
-  //   outcome = err ? false : true;
-  // });
 }
 
 module.exports = { makeValhallaDir };
