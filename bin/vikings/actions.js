@@ -5,19 +5,7 @@ const {
   valhallaPath,
   vikingExtension,
 } = require("../relativeVars");
-
-function makeValhallaDir(path, successMessage, errorMessage) {
-  const relativePath = `${valhallaPath}${path}`;
-  fs.mkdir(relativePath, { recursive: true }, (err) => {
-    console.log(
-      !err
-        ? chalk.blueBright(
-            `${successMessage}: ${chalk.underline(relativePath)}`
-          )
-        : chalk.redBright(errorMessage)
-    );
-  });
-}
+const { makeValhallaDir } = require("../utils");
 
 function backupViking(name) {
   const vikingPath = `${valheimClientPath}\\characters\\${name}${vikingExtension}`;
@@ -28,26 +16,6 @@ function backupViking(name) {
   console.log(
     chalk.blueBright(`Backing up viking: ${chalk.redBright.underline(name)}`)
   );
-
-  //Check for valhalla & create one if it is lost
-  try {
-    fs.statSync(valhallaPath);
-  } catch (error) {
-    if (error.code == "ENOENT") {
-      makeValhallaDir(
-        "\\worlds",
-        "Odin's worlds are safe here",
-        "Valhalla worlds directory could not be created!"
-      );
-      makeValhallaDir(
-        "\\vikings",
-        "Odin's vikings are safe here",
-        "Valhalla vikings directory could not be created!"
-      );
-    } else {
-      console.error(chalk.bgRed("Error finding Valhalla"), error);
-    }
-  }
 
   //Check if viking has a home in valhalla already and make one if not.
   try {

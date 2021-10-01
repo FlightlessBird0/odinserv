@@ -5,7 +5,7 @@ require("dotenv").config({
 const yargs = require("yargs");
 const chalk = require("chalk");
 const { TYPES } = require("./constants.json");
-const client = require("./client/actions");
+const client = require("./vikings/actions");
 
 yargs.command({
   command: "backup",
