@@ -56,9 +56,21 @@ function backupViking(name) {
 }
 
 function backupAllVikings() {
-  console.log(
-    chalk.yellow(`Backing up ${chalk.yellowBright.underline("ALL")} vikings!`)
-  );
+  console.log(chalk.bgYellowBright.blackBright("BAV: FEATURE NOT ENABLED YET"));
 }
 
-module.exports = { backupViking, backupAllVikings };
+function restoreViking(name) {
+  console.log(
+    chalk.blueBright(`Restoring Viking: ${chalk.redBright.underline(name)}`)
+  );
+}
+function restoreAllVikings() {
+  console.log(chalk.bgYellowBright.blackBright("RAV: FEATURE NOT ENABLED YET"));
+}
+
+module.exports = {
+  backupViking,
+  backupAllVikings,
+  restoreAllVikings,
+  restoreViking,
+};

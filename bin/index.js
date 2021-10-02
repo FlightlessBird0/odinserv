@@ -2,7 +2,8 @@
 const yargs = require("yargs");
 const chalk = require("chalk");
 const { TYPES } = require("./constants.json");
-const client = require("./vikings/actions");
+const vikingActions = require("./vikings/actions");
+const worldActions = require("./worlds/actions");
 
 const usageStatement = chalk.bold(
   chalk.cyanBright(
@@ -21,34 +22,119 @@ yargs
     )} for a helpful list brOther.`,
     builder: {
       type: {
-        describe:
-          "Choose your desired type to backup, either 'world, 'viking', or 'both'.",
+        describe: `Choose your desired type to backup, world or viking. \n e.g. ${chalk.greenBright(
+          "--type=viking"
+        )}`,
         type: "string",
         demandOption: true,
       },
       name: {
-        describe:
-          "Choose the specific instance to backup, this should be the name of your world, viking, or 'all'. Defaults to all",
+        describe: `Choose the specific instance to backup\n e.g. ${chalk.greenBright(
+          "--name=MyVikingOrWorldName"
+        )}`,
         type: "string",
-        demandOption: false,
+        demandOption: true,
+      },
+      serverWorld: {
+        describe: `Backs up your dedicated server world.\n e.g. ${chalk.greenBright(
+          "-s"
+        )}`,
+        type: "boolean",
+        alias: "s",
       },
     },
     handler: function (argv) {
       switch (argv.type) {
         case TYPES.VIKING:
           if (typeof argv.name == "string" && argv.name.length > 0) {
-            client.backupViking(argv.name);
+            vikingActions.backupViking(argv.name);
           } else {
-            client.backupAllVikings();
+            vikingActions.backupAllVikings();
           }
           break;
         case TYPES.WORLD:
-          console.log("World selected!");
+          if (typeof argv.name == "string" && argv.name.length > 0) {
+            if (argv.serverWorld) {
+              worldActions.backupServerWorld(argv.name);
+            } else {
+              worldActions.backupClientWorld(argv.name);
+            }
+          } else {
+            if (argv.serverWorld) {
+              worldActions.backupAllServerWorlds();
+            } else {
+              worldActions.backupAllClientWorlds();
+            }
+          }
           break;
         default:
           console.log(
             chalk.redBright(
-              `Invalid type: Please try ${chalk.greenBright(
+              `Invalid option: Please try ${chalk.greenBright(
+                "'odin --help'"
+              )} for help`
+            )
+          );
+          break;
+      }
+    },
+  })
+  .command({
+    command: "restore",
+    describe: `Restores up your world or character based on the type & name flag\nType ${chalk.greenBright(
+      "odin restore --help"
+    )} for a helpful list brOther.`,
+    builder: {
+      type: {
+        describe: `Choose your desired type to restore, world or viking. \n e.g. ${chalk.greenBright(
+          "--type=viking"
+        )}`,
+        type: "string",
+        demandOption: true,
+      },
+      name: {
+        describe: `Choose the specific instance to restore\n e.g. ${chalk.greenBright(
+          "--name=MyVikingOrWorldName"
+        )}`,
+        type: "string",
+        demandOption: true,
+      },
+      serverWorld: {
+        describe: `Restores your world to your dedicated server.\n e.g. ${chalk.greenBright(
+          "--sw"
+        )}`,
+        type: "boolean",
+        alias: "sw",
+      },
+    },
+    handler: function (argv) {
+      switch (argv.type) {
+        case TYPES.VIKING:
+          if (typeof argv.name == "string" && argv.name.length > 0) {
+            vikingActions.restoreViking(argv.name);
+          } else {
+            vikingActions.restoreAllVikings();
+          }
+          break;
+        case TYPES.WORLD:
+          if (typeof argv.name == "string" && argv.name.length > 0) {
+            if (argv.serverWorld) {
+              worldActions.restoreServerWorld(argv.name);
+            } else {
+              worldActions.restoreClientWorld(argv.name);
+            }
+          } else {
+            if (argv.serverWorld) {
+              worldActions.restoreAllServerWorlds();
+            } else {
+              worldActions.restoreAllClientWorlds();
+            }
+          }
+          break;
+        default:
+          console.log(
+            chalk.redBright(
+              `Invalid option: Please try ${chalk.greenBright(
                 "'odin --help'"
               )} for help`
             )
@@ -58,6 +144,7 @@ yargs
     },
   })
   .demandCommand()
-  .help();
+  .help()
+  .version();
 
 yargs.parse();
