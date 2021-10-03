@@ -1,4 +1,71 @@
 const chalk = require("chalk");
+const fs = require("fs");
+const {
+  valheimClientPath,
+  worldExtension,
+  worldDbExtension,
+  valhallaPath,
+} = require("../relativeVars");
+const { makeValhallaDir } = require("../utils");
+
+function backupClientWorld(name) {
+  const timestampedName = `${name}_backup_${new Date().getTime()}`;
+  const worldPath = `${valheimClientPath}\\worlds\\${name}${worldExtension}`;
+  const worldDbPath = `${valheimClientPath}\\worlds\\${name}${worldDbExtension}`;
+  const valhallaHomePath = `${valhallaPath}\\worlds\\${name}\\${timestampedName}`;
+
+  let worldExists = fs.existsSync(worldPath) && fs.existsSync(worldDbPath);
+  let valhallaHomeExists = false;
+
+  console.log(
+    chalk.blueBright(`Backing up world: ${chalk.redBright.underline(name)}`)
+  );
+
+  if (worldExists) {
+    valhallaHomeExists = makeValhallaDir(
+      `\\worlds\\${name}\\${timestampedName}`,
+      "Your find a nice clearing for your home.",
+      `Valhalla home directory for ${chalk.redBright.underline(
+        name
+      )} could not be created!`
+    );
+  }
+
+  try {
+    if (worldExists && valhallaHomeExists) {
+      fs.copyFileSync(
+        worldPath,
+        `${valhallaHomePath}\\${name}${worldExtension}`
+      );
+      fs.copyFileSync(
+        worldDbPath,
+        `${valhallaHomePath}\\${name}${worldDbExtension}`
+      );
+      console.log(
+        chalk.cyanBright(
+          `World ${chalk.redBright.underline(name)} is safe in Valhalla!`
+        )
+      );
+    } else {
+      console.log(
+        chalk.bgRed(`Error finding world: ${chalk.underline(name)}\n`)
+      );
+    }
+  } catch (err) {
+    if (err) {
+      console.log(
+        chalk.redBright(`We couldn't save ${chalk.redBright.underline(name)}!`)
+      );
+      return;
+    }
+  }
+}
+
+function backupAllClientWorlds() {
+  console.log(
+    chalk.bgYellowBright.blackBright("BACW: FEATURE NOT ENABLED YET")
+  );
+}
 
 function backupServerWorld(name) {
   console.log(
@@ -10,16 +77,6 @@ function backupServerWorld(name) {
 function backupAllServerWorlds() {
   console.log(
     chalk.bgYellowBright.blackBright("BASW: FEATURE NOT ENABLED YET")
-  );
-}
-function backupClientWorld(name) {
-  console.log(
-    chalk.blueBright(`Backing up world: ${chalk.redBright.underline(name)}`)
-  );
-}
-function backupAllClientWorlds() {
-  console.log(
-    chalk.bgYellowBright.blackBright("BACW: FEATURE NOT ENABLED YET")
   );
 }
 

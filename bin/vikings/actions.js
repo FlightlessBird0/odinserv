@@ -17,7 +17,7 @@ function backupViking(name) {
     chalk.blueBright(`Backing up viking: ${chalk.redBright.underline(name)}`)
   );
 
-  if (!valhallaHomeExists && vikingExists) {
+  if (vikingExists && !valhallaHomeExists) {
     valhallaHomeExists = makeValhallaDir(
       `\\vikings\\${name}`,
       "You find a nice clearing to make a homestead",
@@ -43,7 +43,7 @@ function backupViking(name) {
 
         console.log(
           chalk.cyanBright(
-            `Viking ${chalk.redBright.underline(name)} is safe in his home!`
+            `Viking ${chalk.redBright.underline(name)} is safe in Valhalla!`
           )
         );
       }
