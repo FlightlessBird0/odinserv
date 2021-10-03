@@ -1,6 +1,6 @@
 {
   "name": "odinserv",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A utility for valheim server and client featuring backup and restore functionality.",
   "main": "./bin/index.js",
   "scripts": {
