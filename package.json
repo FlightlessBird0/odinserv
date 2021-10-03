@@ -17,7 +17,7 @@
     "server",
     "client"
   ],
-  "author": "FlightlessBird0",
+  "author": "flightlessbird <alekcsalazar@google.com> (https://github.com/FlightlessBird0/odinserv)",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",

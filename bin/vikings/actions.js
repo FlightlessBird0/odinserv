@@ -8,18 +8,19 @@ const {
 const { makeValhallaDir } = require("../utils");
 
 function backupViking(name) {
+  const timestampedName = `${name}_backup_${new Date().getTime()}`;
   const vikingPath = `${valheimClientPath}\\characters\\${name}${vikingExtension}`;
-  const valhallaHomePath = `${valhallaPath}\\vikings\\${name}`;
+  const valhallaHomePath = `${valhallaPath}\\vikings\\${name}\\${timestampedName}`;
   let vikingExists = fs.existsSync(vikingPath);
-  let valhallaHomeExists = fs.existsSync(valhallaHomePath);
+  let valhallaHomeExists = false;
 
   console.log(
     chalk.blueBright(`Backing up viking: ${chalk.redBright.underline(name)}`)
   );
 
-  if (vikingExists && !valhallaHomeExists) {
+  if (vikingExists) {
     valhallaHomeExists = makeValhallaDir(
-      `\\vikings\\${name}`,
+      `\\vikings\\${name}\\${timestampedName}`,
       "You find a nice clearing to make a homestead",
       `Valhalla home directory for ${chalk.redBright.underline(
         name
@@ -30,9 +31,10 @@ function backupViking(name) {
   if (vikingExists && valhallaHomeExists) {
     fs.copyFile(
       vikingPath,
-      `${valhallaHomePath}\\${name}_backup_${new Date().getTime()}${vikingExtension}`,
+      `${valhallaHomePath}\\${name}${vikingExtension}`,
       (err) => {
         if (err) {
+          console.error(err);
           console.log(
             chalk.redBright(
               `We couldn't save ${chalk.redBright.underline(name)}!`
